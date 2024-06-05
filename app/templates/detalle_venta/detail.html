@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle Venta Detalle{% endblock %}
+
+{% block content %}
+<h2>Detalle Venta Detalle</h2>
+<p>ID Venta: {{ detail.id_venta }}</p>
+<p>ID Producto: {{ detail.id_producto }}</p>
+<p>Cantidad: {{ detail.cantidad }}</p>
+<p>Precio: {{ detail.precio }}</p>
+{% endblock %}
