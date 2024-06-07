@@ -1,8 +1,9 @@
 from sqlalchemy import text
-from app.extensions import db, bcrypt_instance
+from app.extensions import db
 from app.models.cliente import Client
 from app.utils.utilities import timeNowTZ
 from app.schemas.client_schemas import ClientSchema
+
 
 def get(id: int):
     client_object = db.session.query(Client).filter(Client.id == id, Client.status == True).first()
@@ -26,9 +27,7 @@ def create(names: str, email: str, telefono: str, status: bool):
     )
     db.session.add(client_object)
     db.session.commit()
-    client_schema = ClientSchema()
-    id_cliente = client_object.id
-    return client_schema.dump(client_object)
+    return client_object
 
 def update(id: int, data: dict):
     client_object = db.session.query(Client).filter(Client.id == id).first()
@@ -46,3 +45,4 @@ def delete(id: int):
         return {"message": "Client not found"}, 404
     client_object.status = False
     db.session.commit()
+    return {"message": "Client deleted successfully"}

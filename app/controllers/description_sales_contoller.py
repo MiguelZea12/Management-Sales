@@ -1,21 +1,38 @@
-from flask import Blueprint, request, redirect, url_for
-from app.services.sales_description_service import create_sale_detail, update_sale_detail, delete_sale_detail
+from flask import Blueprint, request
+from app.utils.response import create_response
+from app.services.sales_description_service import get_all, get, create, update, delete
 
-sale_description_blueprint = Blueprint("SaleDescription", __name__, url_prefix="/sale-descriptions")
+detail_blueprint = Blueprint("Detail", __name__, url_prefix="/details")
 
-@sale_description_blueprint.route("/", methods=["POST"])
-def create_sale_description():
+@detail_blueprint.route("/", methods=["GET"])
+def get_details():
+    details = get_all()
+    return create_response("success", data={"details": details}, status_code=200)
+
+@detail_blueprint.route("/<int:id>", methods=["GET"])
+def get_detail(id):
+    detail = get(id)
+    if detail:
+        return create_response("success", data={"detail": detail}, status_code=200)
+    return create_response("error", message="Detail not found", status_code=404)
+
+@detail_blueprint.route("/", methods=["POST"])
+def create_detail():
     data = request.get_json()
-    new_description = create_sale_detail(**data)
-    return {"message": "Sale description created successfully", "sale_description": new_description}, 201
+    new_detail = create(**data)
+    return create_response("success", data={"detail": new_detail}, status_code=201)
 
-@sale_description_blueprint.route("/<int:description_id>", methods=["PUT"])
-def update_sale_description(description_id):
+@detail_blueprint.route("/<int:id>", methods=["PUT"])
+def update_detail(id):
     data = request.get_json()
-    updated_description = update_sale_detail(description_id, data)
-    return {"message": "Sale description updated successfully", "sale_description": updated_description}, 200
+    updated_detail = update(id, data)
+    if updated_detail:
+        return create_response("success", data={"detail": updated_detail}, status_code=200)
+    return create_response("error", message="Detail not found", status_code=404)
 
-@sale_description_blueprint.route("/<int:description_id>", methods=["DELETE"])
-def delete_sale_description(description_id):
-    delete_sale_detail(description_id)
-    return {"message": "Sale description deleted successfully"}, 204
+@detail_blueprint.route("/<int:id>", methods=["DELETE"])
+def delete_detail(id):
+    result = delete(id)
+    if result:
+        return create_response("success", message="Detail deleted", status_code=204)
+    return create_response("error", message="Detail not found", status_code=404)

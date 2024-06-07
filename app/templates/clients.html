@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2 class="text-2xl font-semibold mb-4">Listado de Clientes</h2>
-<table class="min-w-full bg-white">
+<table class="min-w-full bg-white border">
     <thead class="bg-gray-800 text-white">
         <tr>
             <th class="w-1/6 py-2">ID</th>
@@ -24,11 +24,13 @@
             <td class="text-center py-2">
                 <a href="{{ url_for('Clients.get_client', id=client.id) }}" class="text-blue-500 hover:text-blue-700">Ver</a>
                 <a href="{{ url_for('Clients.update_client', id=client.id) }}" class="text-yellow-500 hover:text-yellow-700">Editar</a>
-                <a href="{{ url_for('Clients.delete_client', id=client.id) }}" class="text-red-500 hover:text-red-700">Eliminar</a>
+                <form action="{{ url_for('Clients.delete_client', id=client.id) }}" method="post" style="display: inline;">
+                    <button type="submit" class="text-red-500 hover:text-red-700">Desabilitar</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<a href="{{ url_for('Clients.create_client') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4 inline-block">Añadir Cliente</a>
+<a href="{{ url_for('Clients.create_client') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">Añadir Cliente</a>
 {% endblock %}

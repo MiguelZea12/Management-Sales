@@ -1,20 +1,11 @@
 """Extensiones de la aplicación."""
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager
 import logging
 from flask import has_request_context, request
 
 
 db = SQLAlchemy()
 """Instancia de SQLAlchemy"""
-
-bcrypt_instance = Bcrypt()
-"""Instancia de Bcrypt"""
-
-jwt = JWTManager()
-"""Instancia de JWTManager"""
-
 
 class RequestFormatter(logging.Formatter):
     def format(self, record):

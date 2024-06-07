@@ -33,6 +33,10 @@ def update(id: int, data: dict):
 
 def delete(id: int):
     sale_object = db.session.query(ventas).filter(ventas.id == id).first()
+    if sale_object is None:
+        return {"message": "Sale not found"}, 404
     db.session.delete(sale_object)
     db.session.commit()
+    return {"message": "Sale deleted successfully"}
+
 
