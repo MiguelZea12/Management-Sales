@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from app.utils.error_handler import handle_error
 from os import environ
@@ -100,6 +100,8 @@ for blueprint in __blueprints__:
 
 
 @app.route("/", methods=["GET"])
-def test():
-    return "Template API-Flask"
+def home():
+    return render_template("index.html")
+
+
 

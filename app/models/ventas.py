@@ -15,7 +15,8 @@ class ventas(DeclarativeBase):
     creation_date = db.Column(db.DateTime, nullable=True, default=timeNowTZ)
     modification_date = db.Column(db.DateTime)
 
-    def __init__ (self, id_client, date, status):
+    def __init__ (self, id_client, date, status, user_cration_id):
         self.id_client = id_client
         self.date = date
         self.status = status
+        self.user_cration_id = user_cration_id

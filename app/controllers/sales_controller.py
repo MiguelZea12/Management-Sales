@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template, redirect, url_for
 from app.utils.response import create_response
 from app.services.sales_service import get, get_all, create, update, delete
 
@@ -7,32 +7,36 @@ sales_blueprint = Blueprint("Sales", __name__, url_prefix="/sales")
 @sales_blueprint.route("/", methods=["GET"])
 def get_sales():
     sales = get_all()
-    return create_response("success", data={"sales": sales}, status_code=200)
+    return render_template("sales.html", sales=sales)
 
 @sales_blueprint.route("/<int:id>", methods=["GET"])
 def get_sale(id):
     sale = get(id)
     if sale:
-        return create_response("success", data={"sale": sale}, status_code=200)
+        return render_template("sale_detail.html", sale=sale)
     return create_response("error", message="Sale not found", status_code=404)
 
-@sales_blueprint.route("/", methods=["POST"])
+
+@sales_blueprint.route("/new", methods=["GET", "POST"])
 def create_sale():
-    data = request.get_json()
-    new_sale = create(**data)
-    return create_response("success", data={"sale": new_sale}, status_code=201)
+    if request.method == "POST":
+        data = request.form.to_dict()
+        data["status"] = "status" in data
+        new_sale = create(data)
+        return redirect(url_for('Sales.get_sales'))
+    return render_template("sale_form.html", form_title="Crear", form_action=url_for('Sales.create_sale'))
 
-@sales_blueprint.route("/<int:id>", methods=["PUT"])
+@sales_blueprint.route("/<int:id>/edit", methods=["GET", "POST"])
 def update_sale(id):
-    data = request.get_json()
-    updated_sale = update(id, data)
-    if updated_sale:
-        return create_response("success", data={"sale": updated_sale}, status_code=200)
-    return create_response("error", message="Sale not found", status_code=404)
+    sale = get(id)
+    if request.method == "POST":
+        data = request.form.to_dict()
+        data["status"] = "status" in data
+        updated_sale = update(id, data)
+        return redirect(url_for('Sales.get_sales'))
+    return render_template("sale_form.html", form_title="Editar", form_action=url_for('Sales.update_sale', id=id), sale=sale)
 
-@sales_blueprint.route("/<int:id>", methods=["DELETE"])
+@sales_blueprint.route("/<int:id>/delete", methods=["POST"])
 def delete_sale(id):
     result = delete(id)
-    if result:
-        return create_response("success", message="Sale deleted", status_code=204)
-    return create_response("error", message="Sale not found", status_code=404)
+    return redirect(url_for('Sales.get_sales'))

@@ -1,0 +1,29 @@
+<!-- sale_details.html -->
+{% extends "base.html" %}
+
+{% block title %}Detalles de Venta{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Detalles de Venta</h2>
+<table class="min-w-full bg-white">
+    <thead class="bg-gray-800 text-white">
+        <tr>
+            <th class="w-1/5 py-2">ID</th>
+            <th class="w-1/5 py-2">Producto</th>
+            <th class="w-1/5 py-2">Cantidad</th>
+            <th class="w-1/5 py-2">Precio</th>
+        </tr>
+    </thead>
+    <tbody class="text-gray-700">
+        {% for detail in sale_details %}
+        <tr>
+            <td class="text-center py-2">{{ detail.id }}</td>
+            <td class="text-center py-2">{{ detail.product_name }}</td>
+            <td class="text-center py-2">{{ detail.count }}</td>
+            <td class="text-center py-2">{{ detail.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('Sales.get_sales') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4 inline-block">Volver</a>
+{% endblock %}

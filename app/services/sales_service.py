@@ -8,14 +8,15 @@ def get(id: int):
     return sale_schema.dump(sale_object)
 
 def get_all():
-    sale_objects = db.session.query(ventas).all()
-    sale_schema = SaleSchemas(many=True)
-    return sale_schema.dump(sale_objects)
+    sale_objects =  db.session.query(ventas).filter(ventas.status == True).all()
+    return sale_objects
 
-def create(id_cliente: int, fecha: str):
+def create(id_client: int, date: str, status: bool):
     sale_object = ventas(
-        id_cliente=id_cliente,
-        fecha=fecha
+        id_client=id_client,
+        date=date,
+        status=status,
+        user_cration_id= 1
     )
     db.session.add(sale_object)
     db.session.commit()
@@ -34,3 +35,4 @@ def delete(id: int):
     sale_object = db.session.query(ventas).filter(ventas.id == id).first()
     db.session.delete(sale_object)
     db.session.commit()
+

@@ -17,13 +17,13 @@ class Client(DeclarativeBase):
     creation_date = db.Column(db.DateTime, nullable=True, default=timeNowTZ)
     modification_date = db.Column(db.DateTime)
 
-    def __init__(self, names, email, telefono, status
+    def __init__(self, names, email, telefono, status, user_cration_id
                 ):
         self.names = names
         self.email = email
         self.telefono = telefono
         self.status = status
-       
+        self.user_cration_id = user_cration_id  
        
         
 

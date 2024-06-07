@@ -17,9 +17,12 @@ class product (DeclarativeBase):
     creation_date = db.Column(db.DateTime, nullable=True, default=timeNowTZ)
     modification_date = db.Column(db.DateTime)
 
-    def __init__ (self, names, descriptions, status):
+    def __init__ (self, names, descriptions, price, stock, status, user_cration_id):
         self.names = names
         self.descripcion = descriptions
+        self.price = price
+        self.stock = stock
         self.status = status
+        self.user_cration_id = user_cration_id
 
     

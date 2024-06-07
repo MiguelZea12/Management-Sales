@@ -1,38 +1,21 @@
-from app.models.sale_description import SaleDescription
+from app.models.sale_description import SaleDescription as SaleDetail
 from app.schemas.sale_description_schemas import SalesDescriptionSchemas
 from app.extensions import db
 
-def get(id: int):
-    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
-    detail_schema = SalesDescriptionSchemas()
-    return detail_schema.dump(detail_object)
+def get_sale_details_by_sale_id(sale_id):
+    return SaleDetail.query.filter_by(sale_id=sale_id).all()
 
-def get_all():
-    detail_objects = db.session.query(SaleDescription).all()
-    detail_schema = SalesDescriptionSchemas(many=True)
-    return detail_schema.dump(detail_objects)
-
-def create(id_venta: int, id_producto: int, cantidad: int, precio: float):
-    detail_object = SaleDescription(
-        id_venta=id_venta,
-        id_producto=id_producto,
-        cantidad=cantidad,
-        precio=precio
-    )
-    db.session.add(detail_object)
+def create_sale_detail(data):
+    sale_detail = SaleDetail(**data)
+    db.session.add(sale_detail)
     db.session.commit()
-    detail_schema = SalesDescriptionSchemas()
-    return detail_schema.dump(detail_object)
 
-def update(id: int, data: dict):
-    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
+def update_sale_detail(sale_id, data):
+    sale_detail = SaleDetail.query.filter_by(sale_id=sale_id).first()
     for key, value in data.items():
-        setattr(detail_object, key, value)
+        setattr(sale_detail, key, value)
     db.session.commit()
-    detail_schema = SalesDescriptionSchemas()
-    return detail_schema.dump(detail_object)
 
-def delete(id: int):
-    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
-    db.session.delete(detail_object)
+def delete_sale_detail(sale_id):
+    SaleDetail.query.filter_by(sale_id=sale_id).delete()
     db.session.commit()

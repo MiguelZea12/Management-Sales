@@ -5,7 +5,7 @@ from app.schemas.base_schema import BaseSchema
 
 class ProductSchemas (BaseSchema):
     product_id = fields.Int(dump_only=True)
-    name = fields.String()
+    names = fields.String()
     description = fields.String()
     price = fields.Float()
     stock = fields.Int()

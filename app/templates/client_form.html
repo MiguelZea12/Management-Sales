@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ form_title }} Cliente{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">{{ form_title }} Cliente</h2>
+<form method="post" action="{{ form_action }}" class="bg-white p-6 rounded shadow-md">
+    <div class="mb-4">
+        <label for="names" class="block text-gray-700">Nombre:</label>
+        <input type="text" id="names" name="names" value="{{ client.names if client else '' }}" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-4">
+        <label for="email" class="block text-gray-700">Email:</label>
+        <input type="email" id="email" name="email" value="{{ client.email if client else '' }}" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-4">
+        <label for="telefono" class="block text-gray-700">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" value="{{ client.telefono if client else '' }}" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-4">
+        <label for="status" class="block text-gray-700">Estado:</label>
+        <input type="checkbox" id="status" name="status" {% if client and client.status %}checked{% endif %}>
+    </div>
+    <div class="flex justify-end">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+    </div>
+</form>
+{% endblock %}

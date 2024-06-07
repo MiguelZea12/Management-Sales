@@ -8,16 +8,17 @@ def get(id: int):
     return product_schema.dump(product_object)
 
 def get_all():
-    product_objects = db.session.query(product).all()
-    product_schema = ProductSchemas(many=True)
-    return product_schema.dump(product_objects)
+    product_objects = db.session.query(product).filter(product.status == True).all()
+    return product_objects
 
-def create(nombre: str, descripcion: str, precio: float, stock: int):
+def create(names: str, descriptions: str, price: float, stock: int, status: bool):
     product_object = product(
-        nombre=nombre,
-        descripcion=descripcion,
-        precio=precio,
-        stock=stock
+        names=names,
+        descriptions=descriptions,
+        price=price,
+        stock=stock,
+        status=status,
+        user_cration_id=1
     )
     db.session.add(product_object)
     db.session.commit()
