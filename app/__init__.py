@@ -34,5 +34,9 @@ for blueprint in __blueprints__:
 def home():
     return render_template("layout.html")
 
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({'message': 'Hello from Flask!'})
+
 
 

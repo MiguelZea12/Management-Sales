@@ -1,5 +1,5 @@
 from os import path
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 
 # Cargar variables de entorno desde el archivo .env
 basedir = path.abspath(path.dirname(__file__))
