@@ -21,7 +21,7 @@ def create(names: str, descriptions: str, price: float, stock: int, status: bool
         price=price,
         stock=stock,
         status=status,
-        user_creation_id=1
+        user_cration_id=1
     )
     db.session.add(new_product)
     db.session.commit()

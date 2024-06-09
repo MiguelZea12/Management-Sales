@@ -27,9 +27,9 @@ const App: React.FC = () => {
               <Route path="/client/:id/edit" element={<ClientForm />} />
               <Route path="/client/:id" element={<ClientForm />} />
               <Route path="/products" element={<ProductList />} />
-              <Route path="/product/new" element={<ProductForm />} />
-              <Route path="/product/:id/edit" element={<ProductForm />} />
-              <Route path="/product/:id" element={<ProductForm />} />
+              <Route path="/products/new" element={<ProductForm />} />
+              <Route path="/products/:id/edit" element={<ProductForm />} />
+              <Route path="/products/:id" element={<ProductForm />} />
               <Route path="/sales" element={<SaleList />} />
               <Route path="/sale/new" element={<SaleForm />} />
               <Route path="/sale/:id?" element={<SaleForm />} />

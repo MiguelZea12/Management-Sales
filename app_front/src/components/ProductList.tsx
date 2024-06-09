@@ -52,10 +52,10 @@ const ProductList: React.FC = () => {
               <td className="text-center py-2">{product.price}</td>
               <td className="text-center py-2">{product.stock}</td>
               <td className="text-center py-2 space-x-2">
-                <Link to={`/product/${product.id}`} className="text-blue-500 hover:text-blue-700">
+                <Link to={`/products/${product.id}`} className="text-blue-500 hover:text-blue-700">
                   <FontAwesomeIcon icon={faEye} />
                 </Link>
-                <Link to={`/product/${product.id}/edit`} className="text-yellow-500 hover:text-yellow-700">
+                <Link to={`/products/${product.id}/edit`} className="text-yellow-500 hover:text-yellow-700">
                   <FontAwesomeIcon icon={faEdit} />
                 </Link>
                 <button onClick={() => handleDelete(product.id)} className="text-red-500 hover:text-red-700">
@@ -65,8 +65,9 @@ const ProductList: React.FC = () => {
             </tr>
           ))}
         </tbody>
+
       </table>
-      <Link to="/product/new" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">
+      <Link to="/products/new" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">
         Añadir Producto
       </Link>
     </div>
