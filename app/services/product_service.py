@@ -1,39 +1,44 @@
-from app.models.product import product
-from app.schemas.product_schemas import ProductSchemas
+from app.models.product import Product
 from app.extensions import db
+from app.schemas.product_schemas import ProductSchemas
 
 def get(id: int):
-    product_object = db.session.query(product).filter(product.id == id).first()
+    product_object = db.session.query(Product).filter(Product.id == id, Product.status == True).first()
+    if product_object is None:
+        return {"message": "Product not found"}, 404
     product_schema = ProductSchemas()
-    return product_schema.dump(product_object)
+    return product_schema.dump(product_object), 200
 
 def get_all():
-    product_objects = db.session.query(product).filter(product.status == True).all()
-    return product_objects
+    product_objects = db.session.query(Product).filter(Product.status == True).all()
+    product_schema = ProductSchemas(many=True)
+    return product_schema.dump(product_objects)
 
 def create(names: str, descriptions: str, price: float, stock: int, status: bool):
-    product_object = product(
+    new_product = Product(
         names=names,
         descriptions=descriptions,
         price=price,
         stock=stock,
         status=status,
-        user_cration_id=1
+        user_creation_id=1
     )
-    db.session.add(product_object)
+    db.session.add(new_product)
     db.session.commit()
     product_schema = ProductSchemas()
-    return product_schema.dump(product_object)
+    return product_schema.dump(new_product)
 
 def update(id: int, data: dict):
-    product_object = db.session.query(product).filter(product.id == id).first()
+    product = db.session.query(Product).filter(Product.id == id).first()
+    if product is None:
+        return {"message": "Product not found"}, 404
     for key, value in data.items():
-        setattr(product_object, key, value)
+        setattr(product, key, value)
     db.session.commit()
     product_schema = ProductSchemas()
-    return product_schema.dump(product_object)
+    return product_schema.dump(product), 200
 
 def delete(id: int):
-    product_object = db.session.query(product).filter(product.id == id).first()
-    db.session.delete(product_object)
+    product = db.session.query(Product).filter(Product.id == id).first()
+    db.session.delete(product)
     db.session.commit()

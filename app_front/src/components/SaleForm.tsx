@@ -7,6 +7,7 @@ const SaleForm: React.FC = () => {
   const navigate = useNavigate();
   const [formTitle, setFormTitle] = useState('Crear');
   const [sale, setSale] = useState({ id_client: '', date: '', status: false });
+  const [clients, setClients] = useState<any[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -15,19 +16,31 @@ const SaleForm: React.FC = () => {
         setSale(response.data);
       });
     }
+    // Fetch all clients
+    axios.get('/api/clients/')
+      .then((response) => {
+        setClients(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching clients:', error);
+      });
   }, [id]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const method = id ? 'put' : 'post';
-    const url = id ? `/api/sales/${id}` : '/api/sales';
-    axios[method](url, sale).then(() => {
+    const url = id ? `/api/sales/${id}/edit` : '/api/sales/new';
+    try {
+      await axios[method](url, { ...sale, id_client: parseInt(sale.id_client) });
       navigate('/sales');
-    });
+    } catch (error) {
+      console.error('Error saving sale:', error);
+    }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = event.target;
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, value, type } = event.target;
+    const checked = type === 'checkbox' ? (event.target as HTMLInputElement).checked : false;
     setSale((prevSale) => ({
       ...prevSale,
       [name]: type === 'checkbox' ? checked : value,
@@ -39,8 +52,13 @@ const SaleForm: React.FC = () => {
       <h2 className="text-2xl font-semibold mb-4">{formTitle} Venta</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
         <div className="mb-4">
-          <label htmlFor="id_client" className="block text-gray-700">ID Cliente:</label>
-          <input type="number" id="id_client" name="id_client" value={sale.id_client} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
+          <label htmlFor="id_client" className="block text-gray-700">Cliente:</label>
+          <select id="id_client" name="id_client" value={sale.id_client} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded">
+            <option value="">Seleccione un cliente</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>{client.names}</option>
+            ))}
+          </select>
         </div>
         <div className="mb-4">
           <label htmlFor="date" className="block text-gray-700">Fecha:</label>

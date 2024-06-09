@@ -4,7 +4,7 @@ from app.utils.utilities import timeNowTZ
 from sqlalchemy.dialects.postgresql import JSONB
 
 
-class ventas(DeclarativeBase):
+class Sales(DeclarativeBase):
     __tablename__ = "Sale"
     id = db.Column(db.Integer, primary_key=True)
     id_client = db.Column(db.Integer, db.ForeignKey('Client.id'))

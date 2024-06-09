@@ -6,13 +6,28 @@ const ProductForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [formTitle, setFormTitle] = useState('Crear');
-  const [product, setProduct] = useState({ names: '', descriptions: '', price: 0, stock: 0, status: false });
+  const [product, setProduct] = useState({
+    names: '',
+    descriptions: '',
+    price: 0,
+    stock: 0,
+    status: false
+  });
 
   useEffect(() => {
     if (id) {
       setFormTitle('Editar');
       axios.get(`/api/products/${id}`).then((response) => {
-        setProduct(response.data);
+        const data = response.data;
+        setProduct({
+          names: data.names || '',
+          descriptions: data.descriptions || '',
+          price: data.price ?? 0,
+          stock: data.stock ?? 0,
+          status: data.status ?? false
+        });
+      }).catch(error => {
+        console.error('Error fetching product:', error);
       });
     }
   }, [id]);
@@ -20,9 +35,11 @@ const ProductForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const method = id ? 'put' : 'post';
-    const url = id ? `/api/products/${id}` : '/api/products';
+    const url = id ? `/api/products/${id}/edit` : '/api/products/new';
     axios[method](url, product).then(() => {
       navigate('/products');
+    }).catch(error => {
+      console.error('Error saving product:', error);
     });
   };
 

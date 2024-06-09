@@ -4,9 +4,9 @@ from app.schemas.base_schema import BaseSchema
 
 
 class ProductSchemas (BaseSchema):
-    product_id = fields.Int(dump_only=True)
+    id = fields.Int(dump_only=True)
     names = fields.String()
-    description = fields.String()
+    descriptions = fields.String()
     price = fields.Float()
     stock = fields.Int()
     status = fields.Boolean()

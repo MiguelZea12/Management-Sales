@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const SaleList: React.FC = () => {
-  const [sales, setSales] = useState([]);
+  const [sales, setSales] = useState<any[]>([]);
 
   useEffect(() => {
     axios.get('/api/sales').then((response) => {
       setSales(response.data);
+    }).catch(error => {
+      console.error('Error fetching sales:', error);
     });
   }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`/api/sales/${id}/delete`);
+      setSales(prevSales => prevSales.filter(sale => sale.id !== id));
+    } catch (error) {
+      console.error('Error deleting sale:', error);
+    }
+  };
 
   return (
     <div>
@@ -29,17 +43,21 @@ const SaleList: React.FC = () => {
               <td className="text-center py-2">{sale.id_client}</td>
               <td className="text-center py-2">{sale.date}</td>
               <td className="text-center py-2">
-                <a href={`/sale/${sale.id}`} className="text-blue-500 hover:text-blue-700">Ver</a>
-                <a href={`/sale/${sale.id}`} className="text-yellow-500 hover:text-yellow-700">Editar</a>
-                <form method="POST" action={`/api/sales/${sale.id}`} style={{ display: 'inline' }}>
-                  <button type="submit" className="text-red-500 hover:text-red-700">Eliminar</button>
-                </form>
+                <Link to={`/sale/${sale.id}`} className="text-blue-500 hover:text-blue-700">
+                  <FontAwesomeIcon icon={faEye} />
+                </Link>
+                <Link to={`/sale/${sale.id}/edit`} className="text-yellow-500 hover:text-yellow-700 ml-2">
+                  <FontAwesomeIcon icon={faEdit} />
+                </Link>
+                <button onClick={() => handleDelete(sale.id)} className="text-red-500 hover:text-red-700 ml-2">
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <a href="/sale" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">Añadir Venta</a>
+      <Link to="/sale" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">Añadir Venta</Link>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 from app.extensions import db
 from app.models.declarative_base import DeclarativeBase
 from app.utils.utilities import timeNowTZ

@@ -23,16 +23,13 @@ const ClientList: React.FC = () => {
       return;
     }
   
-    console.log('Deleting client with id:', id);  // Añadir para depurar
     try {
-      const response = await axios.delete(`/api/clients/${id}/delete`);
-      console.log(response.data); // Confirmación de eliminación
+      await axios.delete(`/api/clients/${id}/delete`);
       setClients(prevClients => prevClients.filter(client => client.id !== id));
     } catch (error) {
       console.error('Error deleting client:', error);
     }
   };
-  
 
   return (
     <div>
@@ -47,31 +44,27 @@ const ClientList: React.FC = () => {
           </tr>
         </thead>
         <tbody className="text-gray-700">
-  {clients.map((client: any, index: number) => (
-    <tr key={client.id || index}>
-      <td className="text-center py-2">{client.names}</td>
-      <td className="text-center py-2">{client.email}</td>
-      <td className="text-center py-2">{client.telefono}</td>
-      <td className="text-center py-2 space-x-2">
-        <Link to={`/client/${client.id}`} className="text-blue-500 hover:text-blue-700">
-          <FontAwesomeIcon icon={faEye} />
-        </Link>
-        <Link to={`/client/${client.id}/edit`} className="text-yellow-500 hover:text-yellow-700">
-          <FontAwesomeIcon icon={faEdit} />
-        </Link>
-        <button 
-          onClick={() => handleDelete(client.id)} 
-          className="text-red-500 hover:text-red-700"
-        >
-          <FontAwesomeIcon icon={faTrashAlt} />
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+          {clients.map((client: any, index: number) => (
+            <tr key={client.id || index}>
+              <td className="text-center py-2">{client.names}</td>
+              <td className="text-center py-2">{client.email}</td>
+              <td className="text-center py-2">{client.telefono}</td>
+              <td className="text-center py-2 space-x-2">
+                <Link to={`/client/${client.id}`} className="text-blue-500 hover:text-blue-700">
+                  <FontAwesomeIcon icon={faEye} />
+                </Link>
+                <Link to={`/client/${client.id}/edit`} className="text-yellow-500 hover:text-yellow-700">
+                  <FontAwesomeIcon icon={faEdit} />
+                </Link>
+                <button onClick={() => handleDelete(client.id)} className="text-red-500 hover:text-red-700">
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
-      <Link to="/client" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">
+      <Link to="/client/new" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">
         Añadir Cliente
       </Link>
     </div>

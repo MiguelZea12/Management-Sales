@@ -25,9 +25,9 @@ def create_client():
 
 @client_blueprint.route("/<int:id>/edit", methods=["PUT"])
 def update_client(id):
-    data = request.get_json()
-    updated_client, status = update(id, data)
-    return jsonify(updated_client), status
+    data = request.json
+    updated_client = update(id, data)
+    return jsonify(updated_client)
 
 @client_blueprint.route("/<int:id>/delete", methods=["DELETE"])
 def delete_client(id):
