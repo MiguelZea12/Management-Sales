@@ -14,10 +14,11 @@ def get_all():
 
 def create(id_venta: int, id_producto: int, cantidad: int, precio: float):
     detail_object = SaleDescription(
-        id_venta=id_venta,
-        id_producto=id_producto,
-        cantidad=cantidad,
-        precio=precio
+        id_venta = id_venta,
+        id_producto = id_producto,
+        cantidad = cantidad,
+        precio = precio,
+        user_cration_id = 1,
     )
     db.session.add(detail_object)
     db.session.commit()

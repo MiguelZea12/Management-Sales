@@ -6,8 +6,10 @@ import ProductForm from './components/ProductForm';
 import ProductList from './components/ProductList';
 import SaleForm from './components/SaleForm';
 import SaleList from './components/SaleList';
+import DetailList from './components/DetailList';
+import DetailForm from './components/DetailForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faBoxOpen, faCashRegister, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faBoxOpen, faCashRegister, faBars, faFileText } from '@fortawesome/free-solid-svg-icons';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +36,10 @@ const App: React.FC = () => {
               <Route path="/sale/new" element={<SaleForm />} />
               <Route path="/sale/:id?" element={<SaleForm />} />
               <Route path="/sale/:id/edit" element={<SaleForm />} />
+              <Route path="/details" element={<DetailList/>} />
+              <Route path="/detail/new" element={<DetailForm />} />
+              <Route path="/detail/:id/edit" element={<DetailForm />} />
+              <Route path="/detail/:id" element={<DetailForm />} />
             </Routes>
           </main>
         </div>
@@ -54,19 +60,25 @@ const Sidebar: React.FC = () => {
         <li>
           <a href="/clients" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-200">
             <FontAwesomeIcon icon={faUsers} className="text-2xl text-zinc-300" /> 
-            {isExpanded && <span className="text-lg text-zinc-300">Clientes</span>}
+            {isExpanded && <span className="text-xl text-zinc-300">Clientes</span>}
           </a>
         </li>
         <li>
           <a href="/products" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-200">
             <FontAwesomeIcon icon={faBoxOpen} className="text-2xl text-zinc-300" />
-            {isExpanded && <span className="text-lg text-zinc-300">Productos</span>}
+            {isExpanded && <span className="text-xl text-zinc-300">Productos</span>}
           </a>
         </li>
         <li>
-          <a href="/sales" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-200">
+          <a href="/sales" className="flex items-center space-x-2 px-5 py-5 hover:bg-gray-200">
             <FontAwesomeIcon icon={faCashRegister} className="text-2xl text-zinc-300" />
-            {isExpanded && <span className="text-lg text-zinc-300">Ventas</span>}
+            {isExpanded && <span className="text-xl text-zinc-300">Ventas</span>}
+          </a>
+        </li>
+        <li>
+          <a href="/details" className='flex items-center space-x-2 px-6 py-5 hover:bg-gray-200'>
+            <FontAwesomeIcon icon={faFileText} className='text-2xl text-zinc-300'></FontAwesomeIcon>
+            {isExpanded && <span className='text-xl text-zinc-300'>Detalles</span>}
           </a>
         </li>
       </ul>
