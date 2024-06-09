@@ -4,6 +4,7 @@ from app.utils.error_handler import handle_error
 from os import environ
 
 app = Flask(__name__)
+CORS(app)
 
 if environ.get("ENVIRONMENT") == "PROD":
     app.config.from_object("app.config.ProductionConfig")
@@ -21,14 +22,12 @@ with app.app_context():
     db.init_app(app)
     DeclarativeBase.metadata.create_all(db.engine, checkfirst=True)
 
-
 #: Registro de Blueprints
 from app.controllers import __blueprints__
 
 for blueprint in __blueprints__:
     print("Registering Blueprint: {}".format(blueprint.name))
     app.register_blueprint(blueprint)
-
 
 @app.route("/", methods=["GET"])
 def home():
@@ -37,6 +36,3 @@ def home():
 @app.route('/api/hello', methods=['GET'])
 def get_data():
     return jsonify({'message': 'Hello from Flask!'})
-
-
-

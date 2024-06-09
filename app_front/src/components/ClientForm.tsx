@@ -1,3 +1,5 @@
+// ClientForm.tsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -13,6 +15,8 @@ const ClientForm: React.FC = () => {
       setFormTitle('Editar');
       axios.get(`/api/clients/${id}`).then((response) => {
         setClient(response.data);
+      }).catch(error => {
+        console.error('Error fetching client:', error);
       });
     }
   }, [id]);
@@ -20,9 +24,11 @@ const ClientForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const method = id ? 'put' : 'post';
-    const url = id ? `/api/clients/${id}` : '/api/clients';
+    const url = id ? `/api/clients/${id}/edit` : '/api/clients/new';
     axios[method](url, client).then(() => {
       navigate('/clients');
+    }).catch(error => {
+      console.error('Error saving client:', error);
     });
   };
 

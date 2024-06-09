@@ -3,7 +3,7 @@ from marshmallow import fields
 from app.schemas.base_schema import BaseSchema  # Asegúrate de importar correctamente tu BaseSchema
 
 class ClientSchema(BaseSchema):
-    id : fields.Int(dump_only=True)   # type: ignore
+    id = fields.Int(dump_only=True)   
     names = fields.String()
     email = fields.String()
     telefono = fields.String()

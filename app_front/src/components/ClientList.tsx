@@ -1,14 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const ClientList: React.FC = () => {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get('/api/clients').then((response) => {
-      setClients(response.data);
-    });
+    axios.get('/api/clients/')
+      .then((response) => {
+        setClients(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching clients:', error);
+      });
   }, []);
+
+  const handleDelete = async (id: number) => {
+    if (id === undefined) {
+      console.error('Error: Client ID is undefined');
+      return;
+    }
+  
+    console.log('Deleting client with id:', id);  // Añadir para depurar
+    try {
+      const response = await axios.delete(`/api/clients/${id}/delete`);
+      console.log(response.data); // Confirmación de eliminación
+      setClients(prevClients => prevClients.filter(client => client.id !== id));
+    } catch (error) {
+      console.error('Error deleting client:', error);
+    }
+  };
+  
 
   return (
     <div>
@@ -16,7 +40,6 @@ const ClientList: React.FC = () => {
       <table className="min-w-full bg-white border">
         <thead className="bg-gray-800 text-white">
           <tr>
-            <th className="w-1/6 py-2">ID</th>
             <th className="w-1/6 py-2">Nombre</th>
             <th className="w-1/6 py-2">Email</th>
             <th className="w-1/6 py-2">Teléfono</th>
@@ -24,24 +47,33 @@ const ClientList: React.FC = () => {
           </tr>
         </thead>
         <tbody className="text-gray-700">
-          {clients.map((client: any) => (
-            <tr key={client.id}>
-              <td className="text-center py-2">{client.id}</td>
-              <td className="text-center py-2">{client.names}</td>
-              <td className="text-center py-2">{client.email}</td>
-              <td className="text-center py-2">{client.telefono}</td>
-              <td className="text-center py-2 space-x-2">
-                <a href={`/client/${client.id}`} className="text-blue-500 hover:text-blue-700">Ver</a>
-                <a href={`/client/${client.id}`} className="text-yellow-500 hover:text-yellow-700">Editar</a>
-                <form method="POST" action={`/api/clients/${client.id}`} style={{ display: 'inline' }}>
-                  <button type="submit" className="text-red-500 hover:text-red-700">Deshabilitar</button>
-                </form>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  {clients.map((client: any, index: number) => (
+    <tr key={client.id || index}>
+      <td className="text-center py-2">{client.names}</td>
+      <td className="text-center py-2">{client.email}</td>
+      <td className="text-center py-2">{client.telefono}</td>
+      <td className="text-center py-2 space-x-2">
+        <Link to={`/client/${client.id}`} className="text-blue-500 hover:text-blue-700">
+          <FontAwesomeIcon icon={faEye} />
+        </Link>
+        <Link to={`/client/${client.id}/edit`} className="text-yellow-500 hover:text-yellow-700">
+          <FontAwesomeIcon icon={faEdit} />
+        </Link>
+        <button 
+          onClick={() => handleDelete(client.id)} 
+          className="text-red-500 hover:text-red-700"
+        >
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
       </table>
-      <a href="/client" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">Añadir Cliente</a>
+      <Link to="/client" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 mt-4 inline-block">
+        Añadir Cliente
+      </Link>
     </div>
   );
 };

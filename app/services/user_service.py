@@ -4,18 +4,20 @@ from app.models.cliente import Client
 from app.utils.utilities import timeNowTZ
 from app.schemas.client_schemas import ClientSchema
 
-
 def get(id: int):
     client_object = db.session.query(Client).filter(Client.id == id, Client.status == True).first()
     if client_object is None:
         return {"message": "Client not found"}, 404
     client_schema = ClientSchema()
-    return client_schema.dump(client_object)
-
+    return client_schema.dump(client_object), 200
 
 def get_all():
     client_objects = db.session.query(Client).filter(Client.status == True).all()
-    return client_objects
+    client_schema = ClientSchema(many=True)
+    clients = client_schema.dump(client_objects)
+    print(clients)  # Agrega este log para verificar los datos
+    return clients
+
 
 def create(names: str, email: str, telefono: str, status: bool):
     client_object = Client(
@@ -27,7 +29,8 @@ def create(names: str, email: str, telefono: str, status: bool):
     )
     db.session.add(client_object)
     db.session.commit()
-    return client_object
+    client_schema = ClientSchema()
+    return client_schema.dump(client_object), 201
 
 def update(id: int, data: dict):
     client_object = db.session.query(Client).filter(Client.id == id).first()
@@ -37,7 +40,7 @@ def update(id: int, data: dict):
         setattr(client_object, key, value)
     db.session.commit()
     client_schema = ClientSchema()
-    return client_schema.dump(client_object)
+    return client_schema.dump(client_object), 200
 
 def delete(id: int):
     client_object = db.session.query(Client).filter(Client.id == id).first()
@@ -45,4 +48,4 @@ def delete(id: int):
         return {"message": "Client not found"}, 404
     client_object.status = False
     db.session.commit()
-    return {"message": "Client deleted successfully"}
+    return {"message": "Client deleted successfully"}, 200
