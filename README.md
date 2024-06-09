@@ -2,7 +2,7 @@
 
 El proyecto Reporte de ventas, esta realizado para la gestion de las misma, para asi facilitar la visualizacion de las ventas realizadas dentro de la tienda. Realizado con tecnologias estable y eficientes.
 
-### Tecnologias.
+## Tecnologias
 
 #### Backend 
 - Python 3.9
@@ -17,9 +17,9 @@ El proyecto Reporte de ventas, esta realizado para la gestion de las misma, para
 #### Base de datos.
 - Postgresql.
 
-### Usabilidad
+## Usabilidad
 
-- Descargar node.js.
+- Descargar node.js
 
 ```bash
  https://nodejs.org/en/download/package-manager
@@ -37,6 +37,13 @@ El proyecto Reporte de ventas, esta realizado para la gestion de las misma, para
 
 ```bash
  python -m venv venv
+```
+- Crear un entorno de desarrolo .env en la raiz del proyecto. Un ejemplo
+
+```bash
+ENVIRONMENT = "DEV"
+DEV_DATABASE_URI = "postgresql+psycopg2://postgres:contraseña@localhost:5432/nombreDeLaBaseDeDatos"
+PROD_DATABASE_URI = ""
 ```
 
 - Activar el entorno virtual.
@@ -78,7 +85,7 @@ El proyecto Reporte de ventas, esta realizado para la gestion de las misma, para
  npm install @fortawesome/react-fontawesome
 ```
 
-### Inicializacion.
+## Inicializacion.
 
 Para la inicializar la app, debe de inicializarse el backend y el frontend para usarse.
 
