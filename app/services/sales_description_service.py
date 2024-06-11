@@ -7,33 +7,42 @@ def get(id: int):
     detail_schema = SalesDescriptionSchemas()
     return detail_schema.dump(detail_object)
 
-def get_all():
-    detail_objects = db.session.query(SaleDescription).all()
-    detail_schema = SalesDescriptionSchemas(many=True)
-    return detail_schema.dump(detail_objects)
+def get_sale_details(sale_id: int):
+    sale_details = db.session.query(SaleDescription).filter(SaleDescription.id_sale == sale_id).all()
+    sale_description_schema = SalesDescriptionSchemas(many=True)
+    serialized_details = sale_description_schema.dump(sale_details)
+    return serialized_details
 
-def create(id_venta: int, id_producto: int, cantidad: int, precio: float):
+def create(id_sale: int, id_product: int, count: int, price: float):
     detail_object = SaleDescription(
-        id_venta = id_venta,
-        id_producto = id_producto,
-        cantidad = cantidad,
-        precio = precio,
-        user_cration_id = 1,
+        id_sale=id_sale,
+        id_product=id_product,
+        count=count,
+        price=price,
+        status=True,
+        user_cration_id=1,
     )
     db.session.add(detail_object)
     db.session.commit()
     detail_schema = SalesDescriptionSchemas()
-    return detail_schema.dump(detail_object)
+    return detail_schema.dump(detail_object), 201
 
-def update(id: int, data: dict):
+def update(id: int, id_sale: int, id_product: int, count: int, price: float):
     detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
-    for key, value in data.items():
-        setattr(detail_object, key, value)
+    if not detail_object:
+        return {'message': 'Detail not found'}, 404
+    detail_object.id_sale = id_sale
+    detail_object.id_product = id_product
+    detail_object.count = count
+    detail_object.price = price
     db.session.commit()
     detail_schema = SalesDescriptionSchemas()
-    return detail_schema.dump(detail_object)
+    return detail_schema.dump(detail_object), 200
 
 def delete(id: int):
     detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
+    if not detail_object:
+        return {'message': 'Detail not found'}, 404
     db.session.delete(detail_object)
     db.session.commit()
+    return {'message': 'Detail deleted'}, 204

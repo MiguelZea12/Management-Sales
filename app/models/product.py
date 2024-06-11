@@ -19,7 +19,7 @@ class Product (DeclarativeBase):
 
     def __init__ (self, names, descriptions, price, stock, status, user_cration_id):
         self.names = names
-        self.descripcion = descriptions
+        self.descriptions = descriptions
         self.price = price
         self.stock = stock
         self.status = status

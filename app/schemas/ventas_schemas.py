@@ -4,7 +4,7 @@ from app.schemas.base_schema import BaseSchema
 
 class SaleSchemas (BaseSchema):
     id = fields.Int(dump_only=True)
-    client_id = fields.Int()
+    id_client = fields.Int()
     date = fields.DateTime()
     status = fields.Boolean()
     user_creation_id = fields.Integer()

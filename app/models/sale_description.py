@@ -17,9 +17,10 @@ class SaleDescription(DeclarativeBase):
     creation_date = db.Column(db.DateTime, nullable=True, default=timeNowTZ)
     modification_date = db.Column(db.DateTime)
 
-    def __init__ (self, id_sale, id_product, count, price, status):
+    def __init__ (self, id_sale, id_product, count, price, status, user_cration_id):
         self.id_sale = id_sale
         self.id_product = id_product
         self.count = count
         self.price = price
         self.status = status
+        self.user_cration_id = user_cration_id
