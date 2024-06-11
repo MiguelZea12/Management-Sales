@@ -8,7 +8,8 @@ const DetailList: React.FC = () => {
     const [details, setDetails] = useState<any[]>([]);
 
     useEffect(() => {
-        axios.get("/api/details/")
+        axios
+            .get("/api/details/")
             .then((response) => {
                 setDetails(response.data);
             })
@@ -16,7 +17,7 @@ const DetailList: React.FC = () => {
                 console.error("Error fetching details:", error);
             });
     }, []);
-
+    
     const handleDelete = async (id: number) => {
         if (id === undefined) {
             console.error("Error: Detail ID is undefined");
@@ -47,10 +48,10 @@ const DetailList: React.FC = () => {
                 </thead>
                 <tbody className="text-gray-700">
                     {details.map((detail: any, index: number) => (
-                        <tr key={index}>
+                        <tr key={detail.id || index}>
                             <td className="text-center py-2">{detail.id}</td>
                             <td className="text-center py-2">{detail.id_sale}</td>
-                            <td className="text-center py-2">{detail.id_product}</td>
+                            <td className="text-center py-2">{detail.product_name}</td>
                             <td className="text-center py-2">{detail.count}</td>
                             <td className="text-center py-2">{detail.price}</td>
                             <td className="text-center py-2 space-x-2">

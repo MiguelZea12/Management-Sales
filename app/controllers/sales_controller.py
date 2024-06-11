@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services.sales_service import get, get_all, create_sale, update, delete
-from app.services.sales_description_service import get_sale_details, update as update_detail
+from app.services.sales_description_service import get_sale_details, get_all as get_all_details, update as update_detail
 
 sales_blueprint = Blueprint("Sales", __name__, url_prefix="/api/sales")
 
@@ -11,7 +11,7 @@ def get_sales():
 
 @sales_blueprint.route("/<int:id>/details", methods=["GET"])
 def get_sale_details_controller(id):
-    details = get_sale_details(id)
+    details = get_all_details(id)
     return jsonify(details), 200
 
 @sales_blueprint.route("/<int:id>", methods=["GET"])
@@ -38,7 +38,7 @@ def update_sale(id):
     updated_sale, status_code = update(id, sale_data)
     if status_code != 200:
         return jsonify(updated_sale), status_code
-    detail_data['id_sale'] = id  # Usar el ID de la venta existente para actualizar los detalles
+    detail_data['id_sale'] = id
     updated_detail, detail_status_code = update_detail(id, **detail_data)
     if detail_status_code != 200:
         return jsonify(updated_detail), detail_status_code

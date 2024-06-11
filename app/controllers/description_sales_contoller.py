@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
-from app.services.sales_description_service import get_sale_details, get, create, update, delete
+from app.services.sales_description_service import get_all, get, create, update, delete
 
 detail_blueprint = Blueprint("Detail", __name__, url_prefix="/api/details")
 
 @detail_blueprint.route("/", methods=["GET"])
 def get_details():
-    details = get_sale_details()
+    details = get_all()
     return jsonify(details), 200
 
 @detail_blueprint.route("/<int:id>", methods=["GET"])

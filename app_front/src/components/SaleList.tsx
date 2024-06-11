@@ -1,4 +1,3 @@
-// SaleList.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -10,6 +9,7 @@ const SaleList: React.FC = () => {
 
     useEffect(() => {
         axios.get('/api/sales').then((response) => {
+            console.log(response.data); // Verificar datos
             setSales(response.data);
         }).catch(error => {
             console.error('Error fetching sales:', error);
@@ -41,8 +41,8 @@ const SaleList: React.FC = () => {
                     {sales.map((sale: any) => (
                         <tr key={sale.id}>
                             <td className="text-center py-2">{sale.id}</td>
-                            <td className="text-center py-2">{sale.id_client}</td>
-                            <td className="text-center py-2">{sale.date}</td>
+                            <td className="text-center py-2">{sale.client_name}</td>
+                            <td className="text-center py-2">{new Date(sale.date).toLocaleDateString()}</td>
                             <td className="text-center py-2">
                                 <Link to={`/sale/${sale.id}`} className="text-blue-500 hover:text-blue-700">
                                     <FontAwesomeIcon icon={faEye} />
