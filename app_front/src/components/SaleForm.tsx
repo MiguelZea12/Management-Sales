@@ -35,7 +35,7 @@ const SaleForm: React.FC = () => {
                     console.error('Error fetching sale details:', error);
                 });
         }
-        // Cargar clientes y productos
+    
         axios.all([axios.get('/api/clients/'), axios.get('/api/products/')])
             .then(axios.spread((clientsResponse, productsResponse) => {
                 setClients(clientsResponse.data || []);
@@ -56,7 +56,7 @@ const SaleForm: React.FC = () => {
                 id_client: sale.id_client,
                 date: sale.date,
                 status: sale.status,
-                details: [detail] // Enviamos el detalle como un array
+                details: [detail] 
             };
 
             const response = await axios[method](url, requestData);
