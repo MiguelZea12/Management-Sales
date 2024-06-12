@@ -6,13 +6,14 @@ import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 interface ListProps<T> {
     apiUrl: string;
+    appUrl: string;
     headers: string[];
     renderRow: (item: T) => React.ReactNode;
     addUrl: string;
     title: string;
 }
 
-const List = <T extends { id: number | string }>({ apiUrl, headers, renderRow, addUrl, title }: ListProps<T>) => {
+const List = <T extends { id: number | string }>({ apiUrl, appUrl, headers, renderRow, addUrl, title }: ListProps<T>) => {
     const [items, setItems] = useState<T[]>([]);
 
     useEffect(() => {
@@ -51,10 +52,10 @@ const List = <T extends { id: number | string }>({ apiUrl, headers, renderRow, a
                         <tr key={item.id}>
                             {renderRow(item)}
                             <td className="text-center py-2 space-x-2">
-                                <Link to={`${apiUrl}/${item.id}`} className="text-blue-500 hover:text-blue-700">
+                                <Link to={`${appUrl}/${item.id}`} className="text-blue-500 hover:text-blue-700">
                                     <FontAwesomeIcon icon={faEye} />
                                 </Link>
-                                <Link to={`${apiUrl}/${item.id}/edit`} className="text-yellow-500 hover:text-yellow-700 ml-2">
+                                <Link to={`${appUrl}/${item.id}/edit`} className="text-yellow-500 hover:text-yellow-700 ml-2">
                                     <FontAwesomeIcon icon={faEdit} />
                                 </Link>
                                 <button onClick={() => handleDelete(item.id)} className="text-red-500 hover:text-red-700 ml-2">

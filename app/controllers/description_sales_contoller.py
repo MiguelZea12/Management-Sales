@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.sales_description_service import get_all, get, create, update, delete
+from app.services.sales_description_service import get_all, get, create, update_detail, delete
 
 detail_blueprint = Blueprint("Detail", __name__, url_prefix="/api/details")
 
@@ -24,7 +24,7 @@ def create_detail():
 @detail_blueprint.route("/<int:id>", methods=["PUT"])
 def update_detail(id):
     data = request.get_json()
-    updated_detail, status_code = update(id, **data)
+    updated_detail, status_code = update_detail(id, **data)
     return jsonify(updated_detail), status_code
 
 @detail_blueprint.route("/<int:id>", methods=["DELETE"])

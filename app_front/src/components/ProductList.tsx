@@ -4,6 +4,7 @@ import List from './common/List';
 const ProductList: React.FC = () => (
     <List
         apiUrl="/api/products"
+        appUrl='/products'
         headers={['Nombre', 'Descripción', 'Precio', 'Stock']}
         renderRow={(product: any) => (
             <>

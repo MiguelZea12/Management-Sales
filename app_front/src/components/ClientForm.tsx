@@ -4,7 +4,7 @@ import Form from './common/Form';
 const initialClient = { names: '', email: '', telefono: '', status: false };
 
 const ClientForm: React.FC = () => (
-    <Form initialValues={initialClient} apiUrl="/api/clients" formTitle="Cliente" redirectUrl="/clients">
+    <Form initialValues={initialClient} apiUrl="/api/clients/" formTitle="Cliente" redirectUrl="/clients">
         {(client, handleChange) => (
             <>
                 <div className="mb-4">

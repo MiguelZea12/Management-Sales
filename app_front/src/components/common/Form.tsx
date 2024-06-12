@@ -26,11 +26,11 @@ const Form = <T extends Record<string, any>>({ initialValues, apiUrl, formTitle,
                 });
         }
     }, [id, apiUrl]);
-
+    
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         const method = id ? 'put' : 'post';
-        const url = id ? `${apiUrl}/${id}` : apiUrl;
+        const url = id ? `${apiUrl}/${id}/edit` : `${apiUrl}/new`;
         axios[method](url, formData)
             .then(() => {
                 navigate(redirectUrl);
@@ -43,10 +43,21 @@ const Form = <T extends Record<string, any>>({ initialValues, apiUrl, formTitle,
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = event.target;
         const checked = (event.target as HTMLInputElement).checked;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+        const nameParts = name.split('.');
+        if (nameParts.length > 1) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [nameParts[0]]: {
+                    ...prevData[nameParts[0]],
+                    [nameParts[1]]: type === 'checkbox' ? checked : value,
+                },
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
+        }
     };
 
     return (

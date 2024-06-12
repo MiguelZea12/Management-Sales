@@ -70,6 +70,16 @@ def update(id: int, data: dict):
     sale_schema = SaleSchemas()
     return sale_schema.dump(sale_object), 200
 
+def update_detail(id: int, data: dict):
+    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id_sale == id).first()
+    if detail_object is None:
+        return {"message": "Sale detail not found"}, 404
+    for key, value in data.items():
+        setattr(detail_object, key, value)
+    db.session.commit()
+    detail_schema = SalesDescriptionSchemas()
+    return detail_schema.dump(detail_object), 200
+
 def delete(id: int):
     sale_object = db.session.query(Sales).filter(Sales.id == id).first()
     if sale_object is None:

@@ -4,6 +4,7 @@ import List from './common/List';
 const ClientList: React.FC = () => (
     <List
         apiUrl="/api/clients"
+        appUrl="/clients"
         headers={['Nombre', 'Email', 'Teléfono']}
         renderRow={(client: any) => (
             <>

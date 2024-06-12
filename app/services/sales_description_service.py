@@ -2,6 +2,7 @@ from app.models.sale_description import SaleDescription
 from app.schemas.sale_description_schemas import SalesDescriptionSchemas
 from app.models.product import Product
 from app.extensions import db
+from flask import abort
 
 def get(id: int):
     detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
@@ -39,14 +40,12 @@ def create(id_sale: int, id_product: int, count: int, price: float):
     detail_schema = SalesDescriptionSchemas()
     return detail_schema.dump(detail_object), 201
 
-def update(id: int, id_sale: int, id_product: int, count: int, price: float):
-    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id == id).first()
-    if not detail_object:
-        return {'message': 'Detail not found'}, 404
-    detail_object.id_sale = id_sale
-    detail_object.id_product = id_product
-    detail_object.count = count
-    detail_object.price = price
+def update_detail(id: int, data: dict):
+    detail_object = db.session.query(SaleDescription).filter(SaleDescription.id_sale == id).first()
+    if detail_object is None:
+        abort(404)  # Devuelve un error 404 si el detalle no se encuentra
+    for key, value in data.items():
+        setattr(detail_object, key, value)
     db.session.commit()
     detail_schema = SalesDescriptionSchemas()
     return detail_schema.dump(detail_object), 200
