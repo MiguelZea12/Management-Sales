@@ -1,51 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react';
+import Form from './common/Form';
 
-const ClientForm: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
-    const [formTitle, setFormTitle] = useState('Crear');
-    const [client, setClient] = useState({ names: '', email: '', telefono: '', status: false });
+const initialClient = { names: '', email: '', telefono: '', status: false };
 
-    useEffect(() => {
-        if (id) {
-            setFormTitle('Editar');
-            axios.get(`/api/clients/${id}`)
-                .then((response) => {
-                    setClient(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching client:', error);
-                });
-        }
-    }, [id]);
-
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        const method = id ? 'put' : 'post';
-        const url = id ? `/api/clients/${id}/edit` : '/api/clients/new';
-        axios[method](url, client)
-            .then(() => {
-                navigate('/clients');
-            })
-            .catch(error => {
-                console.error('Error saving client:', error);
-            });
-    };
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = event.target;
-        setClient((prevClient) => ({
-            ...prevClient,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
-
-    return (
-        <div>
-            <h2 className="text-2xl font-semibold mb-4">{formTitle} Cliente</h2>
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
+const ClientForm: React.FC = () => (
+    <Form initialValues={initialClient} apiUrl="/api/clients" formTitle="Cliente" redirectUrl="/clients">
+        {(client, handleChange) => (
+            <>
                 <div className="mb-4">
                     <label htmlFor="names" className="block text-gray-700">Nombre:</label>
                     <input type="text" id="names" name="names" value={client.names} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded" />
@@ -62,12 +23,9 @@ const ClientForm: React.FC = () => {
                     <label htmlFor="status" className="block text-gray-700">Estado:</label>
                     <input type="checkbox" id="status" name="status" checked={client.status} onChange={handleChange} />
                 </div>
-                <div className="flex justify-end">
-                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
-                </div>
-            </form>
-        </div>
-    );
-};
+            </>
+        )}
+    </Form>
+);
 
 export default ClientForm;
