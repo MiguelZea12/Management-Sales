@@ -12,25 +12,25 @@ const SideBar: React.FC = () => {
       </div>
       <ul>
         <li>
-          <a href="/clients" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-200">
+          <a href="/clients" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-500">
             <FontAwesomeIcon icon={faUsers} className="text-2xl text-zinc-300" /> 
             {isExpanded && <span className="text-xl text-zinc-300">Clientes</span>}
           </a>
         </li>
         <li>
-          <a href="/products" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-200">
+          <a href="/products" className="flex items-center space-x-2 px-4 py-5 hover:bg-gray-500">
             <FontAwesomeIcon icon={faBoxOpen} className="text-2xl text-zinc-300" />
             {isExpanded && <span className="text-xl text-zinc-300">Productos</span>}
           </a>
         </li>
         <li>
-          <a href="/sales" className="flex items-center space-x-2 px-5 py-5 hover:bg-gray-200">
+          <a href="/sales" className="flex items-center space-x-2 px-5 py-5 hover:bg-gray-500">
             <FontAwesomeIcon icon={faCashRegister} className="text-2xl text-zinc-300" />
             {isExpanded && <span className="text-xl text-zinc-300">Ventas</span>}
           </a>
         </li>
         <li>
-          <a href="/details" className='flex items-center space-x-2 px-6 py-5 hover:bg-gray-200'>
+          <a href="/details" className='flex items-center space-x-2 px-6 py-5 hover:bg-gray-500'>
             <FontAwesomeIcon icon={faFileText} className='text-2xl text-zinc-300'></FontAwesomeIcon>
             {isExpanded && <span className='text-xl text-zinc-300'>Detalles</span>}
           </a>

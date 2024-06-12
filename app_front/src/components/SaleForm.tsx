@@ -146,7 +146,7 @@ const SaleForm: React.FC = () => {
                     <input type="text" id="price" name="price" value={detail.price} readOnly className="w-full p-2 border border-gray-300 rounded" />
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+                    <button type="submit" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Guardar</button>
                 </div>
             </form>
         </div>

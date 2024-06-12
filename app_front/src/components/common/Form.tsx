@@ -66,7 +66,7 @@ const Form = <T extends Record<string, any>>({ initialValues, apiUrl, formTitle,
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
                 {children(formData, handleChange)}
                 <div className="flex justify-end">
-                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+                    <button type="submit" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Guardar</button>
                 </div>
             </form>
         </div>
