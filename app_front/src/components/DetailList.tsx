@@ -15,8 +15,7 @@ const DetailList: React.FC = () => (
             </>
         )}
         addUrl="/detail/new"
-        title="Listado de Detalles de Venta"
-    />
+        title="Listado de Detalles de Venta" appUrl={''}    />
 );
 
 export default DetailList;

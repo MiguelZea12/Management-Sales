@@ -2,6 +2,7 @@ from app.models.ventas import Sales
 from app.models.sale_description import SaleDescription
 from app.schemas.ventas_schemas import SaleSchemas
 from app.models.cliente import Client
+from app.models.product import Product
 from app.schemas.sale_description_schemas import SalesDescriptionSchemas
 from app.extensions import db
 
@@ -36,9 +37,15 @@ def create_sale(id_client: str, date: str, status: bool, details: list):
     for detail_data in details:
         id_product = detail_data.get('id_product')
         count = detail_data.get('count')
-        price = detail_data.get('price')
 
-        if id_product and count and price:
+        if id_product and count:
+            product = db.session.query(Product).filter(Product.id == id_product).first()
+            if not product:
+                db.session.rollback()
+                return {"message": f"Product with id {id_product} not found"}, 404
+            
+            price = product.price * int(count)
+            
             detail = SaleDescription(
                 id_sale=new_sale.id,
                 id_product=id_product,

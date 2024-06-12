@@ -9,7 +9,7 @@ const SaleList: React.FC = () => {
 
     useEffect(() => {
         axios.get('/api/sales').then((response) => {
-            console.log(response.data); // Verificar datos
+            console.log(response.data); 
             setSales(response.data);
         }).catch(error => {
             console.error('Error fetching sales:', error);

@@ -22,13 +22,13 @@ def get_sale(id):
 @sales_blueprint.route("/new", methods=["POST"])
 def create_sale_controller():
     data = request.json
-    sale_id = create_sale(
+    sale_data = create_sale(
         id_client=data.get('id_client'),
         date=data.get('date'),
         status=data.get('status'),
         details=data.get('details')
     )
-    return jsonify({"sale_id": sale_id}), 201
+    return jsonify(sale_data), 201
 
 @sales_blueprint.route("/<int:id>/edit", methods=["PUT"])
 def update_sale(id):
@@ -39,10 +39,8 @@ def update_sale(id):
     if status_code != 200:
         return jsonify(updated_sale), status_code
     
-    # Agregar el ID de la venta a los datos del detalle
     detail_data['id_sale'] = id
     
-    # Llamar a la función update_detail con los datos del detalle
     updated_detail, detail_status_code = update_detail(id, detail_data)
     if detail_status_code != 200:
         return jsonify(updated_detail), detail_status_code
